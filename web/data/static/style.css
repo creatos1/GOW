@@ -1,0 +1,339 @@
+html, body {
+    padding: 0;
+    margin: 0;
+    font-size: 100%;
+    font-family: 'Inconsolata', monospace;
+    color: white;
+}
+
+/* we want render textures without browser interpolation */
+img.no-interpolate { 
+    image-rendering: optimizeSpeed;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -o-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: pixelated;
+    image-rendering: optimize-contrast;
+    -ms-interpolation-mode: nearest-neighbor;
+}
+
+a {
+    color: inherit;
+    font-style: italic;
+    text-decoration: inherit;
+}
+
+#view {
+    display: flex;
+    width: 100%;
+	position: absolute;
+	top: 18px;
+	bottom: 0px;
+    align-items: stretch;
+}     
+
+#view .view-item {
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+    box-shadow: inset 4px 0px 4px -4px #111;
+}
+
+
+#view .view-item.view-item-closed {
+	min-width: 3em;
+	max-width: 3em;
+}
+
+#view .view-item .view-item-container {
+    overflow-y: auto;
+    flex-grow: 1;
+    box-shadow: inset 0px 4px 4px -4px #111;
+}
+
+#view .view-item .view-item-title {
+    padding: 4px;
+    text-align: center;
+    font-weight: bold;
+    flex-grow: 0;
+}
+
+.collapse-button {
+    display: block;
+    cursor: pointer;
+    color: white;
+    text-align: center;
+}
+
+.collapsed {
+	max-width: 2em !important; 
+	width: 2em !important;
+	min-width: 2em !important;
+}
+
+.collapsed .collapse-button {
+	background-color: #6f3859;
+}
+
+#view-fs {
+    background-color: #2f2019;
+    min-width: 10em;
+    max-width: 10em;
+}
+
+#view-pack {
+    background-color: #332b3e;
+}
+
+.items-list ol {
+    list-style-type: none;
+    margin: 0.5em;
+    padding: 0;
+}
+
+.items-list ol li {
+    position: relative;
+    cursor: pointer;
+}
+
+.items-list ol li label:hover {
+    text-decoration: underline;
+}
+
+#view-tree {
+    width: 19em;
+    background-color: #3e2b39;
+}
+
+#view-tree ol {
+    margin: 0.5em;
+    padding: 0;
+    list-style-type: none;
+}
+
+#view-tree ol ol {
+    padding-left: 16px;
+    margin: 0;
+}
+
+#view-tree ol li {
+    position: relative;
+}
+
+#view-tree ol li label {
+    cursor: pointer;
+}
+#view-tree ol li label:hover {
+    text-decoration: underline;
+}
+
+#view-tree ol li.wad-node-link {
+	color: #7df;
+}
+
+#view-tree ol li.wad-node-data {
+	color: #bf7;
+}
+
+#view-tree ol li.wad-node-nodata {
+	color: #89d;
+}
+
+
+#view-summary {
+    width: 18em;
+    background-color: #2b323e;
+    word-break: break-all;
+}
+
+#view-summary a:hover {
+	text-decoration: underline;
+}
+
+#view-summary .center {
+	display: block;
+	margin: 7px auto;
+	text-align: center;
+}
+
+#view-summary table {
+    color: inherit;
+    margin: 4px;
+    border-collapse: collapse;
+}
+
+#view-summary table td {
+    padding: 0 4px;
+    border-left: solid 2px #465265;
+}
+
+#view-summary table tr {
+    border: solid 1px #465265;
+}
+
+#view-summary img {
+    display: inline-block;
+    padding: 4px;
+	min-width: 14em;
+	height: auto;
+}
+
+#view-3d {
+    flex-grow: 1;
+    background-color: #333333;
+}
+
+#view-3d #view-3d-config {
+    padding: 4px;
+    text-align: left;
+    font-weight: bold;
+    flex-grow: 0;
+    user-select: none;
+}
+
+#view-3d #view-3d-config input {
+	margin-left: 16px;
+	user-select: none;
+}
+
+#view-3d #view-3d-config label {
+	padding: 0;
+	margin-left: -8px;
+	cursor: pointer;
+	user-select: none;
+}
+
+#view-3d.collapsed #view-3d-config {
+	display: none;
+}
+
+#view-3d canvas {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+#status {
+	position: absolute;
+	z-index: -2;
+	top: 0;
+	right: 0;
+	left: 0;
+	border-bottom: 1px solid grey;
+	background-color: black;
+	color: white;
+	font-size: 16px;
+	height: 30px;
+}
+
+#status-text {
+	margin-left: 3px;
+}
+
+#status-progress  {
+	position: absolute;
+	z-index: -1;
+	width: 100%;
+	height: 100%;
+	transition: background-color 0.3s ease-out, width 0.3s ease-out;
+}
+
+#status-progress.info { background-color: #363; }
+#status-progress.error { background-color: #a00; }
+#status-progress.progress { background-color: #448; }
+
+a.button-dump {
+    display: inline-block;
+    position: absolute;
+    top: 1px;
+    right: -7px;
+    width: 16px;
+    height: 16px;
+    background-image: url('images/dump-16.png');
+    cursor: pointer;
+}
+
+div.button-upload {
+    display: inline-block;
+    position: absolute;
+    top: 1px;
+    right: 10px;
+    width: 16px;
+    height: 16px;
+    background-image: url('images/upload-16.png');
+    cursor: pointer;
+}
+
+div.view-item-selectors {
+	display: flex;
+	flex-direction: row;
+	box-shadow: inset 0px -61px 19px -64px rgba(150,150,150,1);
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+
+div.view-item-selectors div.item-selector {
+	flex: 1 1 auto;
+	text-align: center;
+	border-left: 1px solid #444;
+	border-right: 1px solid #888;
+	cursor: pointer;
+}
+
+div.view-item-selectors div.item-selector:hover {
+	text-decoration: underline;
+}
+
+table.staticlabelrendercommandlist input {
+	width: 100%;
+}
+
+table.staticlabelrendercommandlist input.no-width {
+	width: auto;
+}
+
+select.animation {
+	margin: 4px 6px;
+	display: block;
+    min-width: 75%;
+}
+
+div#flpimportfont {
+	padding: 12px;
+	margin: 0 auto;
+	width: 90%;
+}
+
+div#flpimportfont input{
+	width: auto;
+}
+div#flpimportfont button{
+	width: 100%;
+}
+
+div.flpcolorpreview {
+	width: 1.5em;
+	display: inline-block;
+	height: 0.95em;
+	margin: 0 4px;
+}
+
+.flpobjref {
+	color: yellow;
+	cursor: pointer;
+}
+
+.flexgrow {
+	flex-grow: 1;
+}
+
+div.view-item-container {
+	position: relative;
+}
+
+div.view-3d-helpers {
+	position: absolute;
+	right: 2px;
+	top: 2px;
+	user-select: none;
+}

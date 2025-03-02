@@ -1,0 +1,183 @@
+struct Interval {
+	uint16 Count
+	uint16 Offset
+	uint16 Unk4
+	uint16 DataOffset
+}
+
+sruct Chunk {
+	uint16 DataIndex
+	uint8  Flags
+	uint8  Offset_In64kb
+	Interval Interval
+}
+
+struct DataBitMap {
+	uint8  WordsCount
+	uint8  ElementsPerSample
+	uint16 Offset
+	uint16 []Bitmap // every word is 4 * 4vector bitmap (4*4=16 bits)
+}
+
+const FP_EPSILON = 1.0 / 4096.0 // 0.00024414062
+
+func (i *Interval) MustUpdateForTime(prevTime, nextTime float32) bool {
+	// f21 - frameTimeLength
+	// f23 - nextTime
+	// f24 - prevTime
+	intervalStartTime = float32(interval.Offset) * frameTimeLength
+	intervalEndTime = float32(interval.Count + interval.Offset + interval.Unk4 - 1) * frameTimeLength
+	if prevTime < nextTime {
+		return intervalStartTime < nextTime + FP_EPSILON && prevTime + FP_EPSILON < intervalEndTime
+	} else {
+		return intervalStartTime < prevTime - FP_EPSILON && nextTime - FP_EPSILON < intervalEndTime
+	}
+}
+
+func stateThreadPosHandle(chunk *Chunk)  {
+	// s1 - chunk
+	// s5 - targetDataBuffer []float32 (unified vec4 space)
+	// f21 - frameTimeLength
+	// f23 - nextTime
+	// f24 - prevTime
+	if !interval.MustUpdateForTime(prevTime, nextTime) {
+		return
+	}
+	
+	f22 = f24
+	// if we skipped some samples, we have to handle them anyway
+	if frameTimeLength < abs(f23 - f24) {
+		sampleStep := (f24 < f23) ? frameTimeLength : (-frameTimeLength)
+		for currentNextTime := f24; frameTimeLength < abs(f23 - currentNextTime); {
+			currentNextTime += f25
+			if chunk.interval.Count != 0 {
+				assignBitMap = (chunk.Flags & 2 != 0)
+					? (chunk + (chunk.Offset_In64kb << 16) + interval.Offset)
+					: defaultDataBitMap
+				if chunk.Flags & 1 != 0 {
+					chunk.handleVec4fAdd(s5, chunk.interval, assignBitMap, f22, currentNextTime, frameTimeLength, 0.00390625)
+				} else {
+					chunk.handleVec4fRaw(s5, chunk.interval, assignBitMap, currentNextTime, frameTimeLength)
+				}
+			} else {
+				chunkData = chunk + (chunk.Offset_In64kb << 16) + interval.Offset // chunkData = s3
+				assignBitMap = (chunk.Flags & 2 != 0)
+					? chunkData + ((1(chunkData)b << 3) | 2)
+					: defaultDataBitMap
+				subIntervalsCountAdd = 0(chunkData)b
+				subIntervalsCountTotal = 1(chunkData)b
+				subChunksData = chunkData + 2 // s7
+				
+				iSubIntervalIndex := 0
+				for ; iSubIntervalIndex < subIntervalsCountAdd; iSubIntervalIndex++ {
+					// f22 = -0.03333, currentNextTime = 0.00000
+					subInterval = subChunksData + iSubIntervalIndex*8
+					if subInterval.MustUpdateForTime(f22, currentNextTime) {
+						chunk.handleVec4fAdd(s5, subInterval, assignBitMap, f22, currentNextTime, frameTimeLength, 0.00390625)
+					}
+				}
+				for ; iSubIntervalIndex < subIntervalsCountTotal; iSubIntervalIndex++ {
+					subInterval = subChunksData + iSubIntervalIndex*8
+					if subInterval.MustUpdateForTime(f22, currentNextTime) {
+						chunk.handleVec4fRaw(s5, subInterval, assignBitMap, currentNextTime, frameTimeLength)
+					}
+				}
+			}
+			f22 = currentNextTime
+		}
+	} else {
+		f22 = f24
+	}
+	
+	// TODO: same as inside of for cycle above, only agains f23, f22 pair. Need to move body of for above to method
+	
+}
+
+func (Chunk *a0) handleVec4fAdd(a1 []float32, a2 Interval, a3 Bitmap, f12, f13, f14, f15 float32) {
+
+}
+
+func (Chunk *a0) handleVec4fRaw(targetDataBuffer []float32, interval Interval, bitmap DataBitMap, nextTime, frameTimeLength float32) {
+	f13 = frameTimeLength
+	t0 = interval.Offset
+	t2 = interval.Count
+	t3 = interval
+	t4 = bitmap
+	t5 = targetDataBuffer
+
+	// t1 - samplesBankIndex
+	samplesBankIndex = int((nextTime + FP_EPSILON) * (1.0 / frameTimeLength)) - interval.Offset
+
+	if samplesBankIndex >= interval.Count {
+		samplesBankIndex = interval.Count - 1
+		nextTime = float32(samplesBankIndex + interval.Offset) * frameTimeLength
+	}
+	if (samplesBankIndex < 0) {
+		samplesBankIndex = 0
+		if (interval.Offset < 0) {
+			nextTime = float32((interval.Offset & 1) | (interval.Offset >> 1)) * frameTimeLength
+		} else {
+			nextTime = float32(interval.Offset) * frameTimeLength
+		}
+	}
+
+	// t6 - sampleFrameOffsetStep
+	sampleFrameOffsetStep = bitmap.ElementsPerSample *  sizeof(float32)
+
+	// t0 - remainingBankSamplesCount
+	remainingBankSamplesCount = (samplesBankIndex + 2 < interval.Count) ? 2 : (interval.Count - samplesBankIndex)
+
+	targetDataChunkBuffer = chunk.DataIndex * sizeof(float32) + targetDataBuffer
+	v1 = chunk + chunk.Offset_In64kb << 1
+			+ interval.Offset + bitmap.Offset
+			+ samplesBankIndex * sizeof(float32) * bitmap.ElementsPerSample
+
+	posInsideFrame = 0.0
+	if remainingBankSamplesCount >= 2 {
+		//  (3.34 - (4 + 2) * 0.5) / ((4 - 1) *0.5)
+		//  0.34 / 1.5
+		posInsideFrame = (nextTime - float32(samplesBankIndex + interval.Offset) * frameTimeLength) /
+						 (float32(remainingBankSamplesCount - 1) * frameTimeLength)
+	}
+	if posInsideFrame < 0.0 {
+		posInsideFrame = 0.0
+	}
+
+	if remainingBankSamplesCount < 2 || posInsideFrame - FP_EPSILON <= 0.0 || posInsideFrame + FP_EPSILON >= 1.0 {
+		// TODO: check that max(posInsideFrame + FP_EPSILON, 0.0) not needed
+		// because posInsideFrame always >= 0.0 as we can see above
+		a2 = int(max(posInsideFrame + FP_EPSILON, 0.0)) * sampleFrameOffsetStep + v1
+		for iBitmapWord = 0; iBitmapWord < bitmap.countOfWords; iBitmapWord++ {
+			bitmapWord = bitmap.Words[iBitmapWord]
+			while bitmapWord != 0 {
+				value = 0(a2)f
+				
+				v1 = targetDataChunkBuffer + TrailingZeros(bitmapWord) * sizeof(float32)
+				0(v1)f = value
+
+				a2 += sizeof(float32)
+				bitmapWord = bitmaskZeroBitsShift(bitmapWord)
+			}
+			targetDataChunkBuffer += 0x10 * sizeof(float32)
+		}
+	} else {
+		a2 = v1
+		for iBitmapWord = 0; iBitmapWord < bitmap.countOfWords; iBitmapWord++ {
+			bitmapWord = bitmap.Words[iBitmapWord]
+			while bitmapWord != 0 {
+				prevValue = 0(a2)f  
+				nextValue = 0(a2 + sampleFrameOffsetStep)f
+				value = prevValue + (nextValue - prevValue) * posInsideFrame
+
+				a0 = targetDataChunkBuffer + TrailingZeros(bitmapWord) * sizeof(float32)
+				0(a0)f = value
+
+				a2 += sizeof(float32)
+				bitmapWord = bitmaskZeroBitsShift(bitmapWord)
+			}
+			targetDataChunkBuffer += 0x10 * sizeof(float32)
+		}
+	}
+	
+}
+

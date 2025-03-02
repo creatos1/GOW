@@ -1,0 +1,145 @@
+=== Type 0 - Trigger Entry Sensor
+#1 =  -1 to trigger once?
+#4 = on trigger handler
+#6 = variable id to store triggered object???
+Example: message show on first chest
+#0 = bool from global data value comparasion
+#1 = 5
+#4 = show message
+#6 = 1
+on death entry sensor (for enemies)
+#6 = int 3 // zone id
+
+=== Type 1 - Trigger Exit Sensor
+
+=== Type 2 - Creation Sensor
+
+=== Type 3 - Destruction Sensor
+
+=== Type 4 - EventSensor
+#0 = int event id
+#3 = bool check some value of event
+#7 = int get some value
+#9 = 1
+
+=== Type 5 - Animator0
+Example: Play door open anim
+#0 = '!0'
+#1 = 8
+
+=== Type 6 - Unknown
+
+=== Type 7 - Vis
+PlayerStartZone-VisIdleOn
+#13 = set idle
+door VisOff after movie
+#0 = 2
+#3 = 2
+VisOffInit at start of level
+#0 = 2
+#3 = 2
+#16 = 2
+VisOnAfter some event
+#0 = 1
+#3 = 1
+#16 = 1
+VisOff after some time
+#11 = float 9.5
+#4 = 2
+Do something after some time (should be triggered by something)
+#11 = float time in seconds
+#13 = script which doing something
+
+
+=== Type 8 - EventTransmitter
+#0 = event id
+#9 = variable id to pick triggered object?
+PlayerStartZone-EvtForce
+#0 = 1019
+#1 = 512
+#7 = onTrigger
+#9 = 1
+DeathZone1-pCube2-EventTransmitter1
+#0 = 1029
+#9 = 8
+
+
+=== Type 9 - Start
+Example: Start
+#0 = string 'Hero'
+#1 = 1
+#2 = string sometimes "IdleCam"
+Example: WarpFromAt
+#0 = 'Athn07b'
+#1 = 'entryCam'
+Example: WarpFromOlymp2
+#0 = 'Olymp02'
+#1 = 'staircam5'
+
+
+
+=== Type 10 - Spawn Enemy ?
+
+
+
+=== Type 11 - Creator
+Example: chest first in game
+#0 = 'chest'
+#5 = 42    TWK_CSM_XXX id for chest
+#6 = 1
+#8 = TRUE
+Example: chest in desert 1
+#0 = 'chest'
+#5 = 8
+#8 = TRUE
+Example: chest in desert 2
+#0 = 'chest'
+#5 = 10
+#8 = TRUE
+
+
+
+=== Type 12 - GlobalData
+
+
+
+=== Type 13 - LevelData
+#(level data[id+1]) = leveldata[id]
+id <= 15, if overflows, next Level data used
+
+also contains level data string name <=> id inside
+
+
+=== Type 14 - Marker
+
+
+=== Type 15 - SoundController
+Example: Play sound
+handler #0 = 1
+
+
+
+
+
+
+
+EVT_Spawn????? = 124
+
+EVT_MpegDone = 501
+
+EVT_Break_or_damage = 1009
+EVT_Reset_usedWhenRestoreChestAndSoOn = 1015
+EVT_FallAnim_or_Die = 1019
+EVT_ChestOrDoorOpened? = 1023
+EVT_UseWorld_likeR2 = 1024
+1025
+1029
+EVT_GrabCicle_or_Move = 1035
+1039 stun?
+EVT_?ShowMessage? = 1040
+EVT_ExplodeDeath? = 1042
+EVT_ReadStart = 1048
+EVT_MsgDone = 1049
+EVT_Timer = 1050
+
+

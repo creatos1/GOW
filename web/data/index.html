@@ -1,0 +1,93 @@
+<html>
+
+<head>
+    <link href='static/fonts/font-inconsolata.css' rel='stylesheet' type='text/css'>
+    <link href='static/style.css' rel='stylesheet' type='text/css'>
+
+    <script src='static/js/vendor/jquery-2.2.3.min.js'></script>
+    <script src='static/js/vendor/jquery.mousewheel.min.js'></script>
+    <script src='static/js/vendor/jquery.binarytransport.js'></script>
+    <script src='static/js/vendor/gl-matrix-min.js'></script>
+    <script src='static/js/vendor/combinations.js'></script>
+
+    <script src='static/js/math/Plane.js'></script>
+    <script src='static/js/Nodes.js'></script>
+    <script src='static/js/Renderer.js'></script>
+    <script src='static/js/RendererHelpers.js'></script>
+    <script src='static/js/RenderChain.js'></script>
+    <script src='static/js/Animation.js'></script>
+    <script src='static/js/BrowserWadFlp.js'></script>
+    <script src='static/js/BrowserWad.js'></script>
+    <script src='static/js/Status.js'></script>
+
+    <title>GoW Browser</title>
+</head>
+
+<body>
+    <div id='status'>
+        <div id='status-progress'></div>
+        <span id='status-text'></span>
+    </div>
+    <div id='view'>
+        <div class='view-item collapsed' id='view-fs'>
+            <div class='collapse-button'>&gt;&gt;</div>
+            <div class='view-item-container items-list'></div>
+        </div>
+        <div class='view-item' id='view-pack'>
+            <div class='collapse-button'>&lt;&lt; HIDE</div>
+            <input type='text' id='view-pack-filter' value='wad' />
+            <div class='view-item-container items-list'></div>
+        </div>
+        <div class='view-item' id='view-tree'>
+            <div class='collapse-button'>&lt;&lt; HIDE</div>
+            <div class='view-item-title'></div>
+            <div class='view-item-selectors'></div>
+            <input type='text' id='view-item-filter' value='' />
+            <div class='view-item-container'></div>
+        </div>
+        <div class='view-item' id='view-summary'>
+            <div class='collapse-button'>&lt;&lt; HIDE</div>
+            <div class='view-item-title'></div>
+            <div class='view-item-selectors'></div>
+            <div class='view-item-container'></div>
+        </div>
+        <div class='view-item' id='view-3d'>
+            <div class='collapse-button'>&lt;&lt; HIDE</div>
+            <div id='view-3d-config'>
+              <input id="show-skeleton-ids" type="checkbox">
+              <label for="show-skeleton-ids">💀 ids</label>
+              <input id="show-skeleton" type="checkbox">
+              <label for="show-skeleton">💀 tree</label>
+              <input id="show-entity" type="checkbox">
+              <label for="show-entity">🏳️ entity</label>
+              <input id="show-instance" type="checkbox">
+              <label for="show-instance">♦ instance</label>
+              <input id="show-collision" type="checkbox">
+              <label for="show-collision">╬ collision</label>
+              <input id="show-collision-static" type="checkbox">
+              <label for="show-collision-static">╬ collision static</label>
+              <input id="show-collision-dbg" type="checkbox">
+              <label for="show-collision-dbg">╬ collision dbg</label>
+              <input id="show-light" type="checkbox">
+              <label for="show-light">☼ light</label>
+              <input id="enable-backface-culling" type="checkbox">
+              <label for="enable-backface-culling">☖ culling</label>
+              <input id="enable-animation" type="checkbox">
+              <label for="enable-animation">⏯ animation</label>
+            </div>
+            <div class='view-item-container'>
+                <canvas></canvas>
+                <div class='view-3d-helpers'>
+                  <label for="enable-3d-helpers">controls</label>
+                  <input id="enable-3d-helpers" type="checkbox">
+                  <div id="hidden-3d-helpers">
+                    <button id="button-3d-reset-camera">reset camera</button></br>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src='static/js/Browser.js'></script>
+</body>
+
+</html>

@@ -1,0 +1,47 @@
+version: '1.{branch}.{build}'
+
+skip_tags: true
+
+clone_folder: c:\gopath\src\github.com\mogaika\god_of_war_browser
+
+environment:
+  GOPATH: c:\gopath
+  GOARCH: 386
+  GOOS: windows
+
+image: Visual Studio 2022 # use latest go version
+
+install:
+  - echo %PATH%
+  - echo %GOPATH%
+  - set PATH=%GOPATH%\bin;c:\go\bin;%PATH%
+  - go version
+  - go env
+
+build_script:
+  - go test -v ./...
+  - go build
+
+after_build:
+  - 7z a god_of_war_browser.zip -r c:\gopath\src\github.com\mogaika\god_of_war_browser\web -x!*.go
+  - 7z a god_of_war_browser.zip god_of_war_browser.exe
+  - 7z a god_of_war_browser.zip font_aliases.cfg
+  - 7z a god_of_war_browser.zip font_aliases.ru.cp1251.cfg
+  - 7z a god_of_war_browser.zip LOCALIZATION.md
+  - 7z a god_of_war_browser.zip README.md
+  - 7z a god_of_war_browser.zip hashes.dump.txt
+  - 7z a god_of_war_browser.zip strings.dump.txt
+  - mv god_of_war_browser.zip god_of_war_browser.%APPVEYOR_BUILD_VERSION%.zip
+
+test: off
+
+artifacts:
+  - path: god_of_war_browser.%APPVEYOR_BUILD_VERSION%.zip
+    name: archive
+
+on_success:
+  - ps: Invoke-RestMethod https://raw.githubusercontent.com/DiscordHooks/appveyor-discord-webhook/master/send.ps1 -o send.ps1
+  - ps: ./send.ps1 success $env:WEBHOOK_URL
+on_failure:
+  - ps: Invoke-RestMethod https://raw.githubusercontent.com/DiscordHooks/appveyor-discord-webhook/master/send.ps1 -o send.ps1
+  - ps: ./send.ps1 failure $env:WEBHOOK_URL
